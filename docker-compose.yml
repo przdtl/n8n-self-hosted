@@ -5,6 +5,8 @@ x-n8n: &service-n8n
   image: n8nio/n8n:latest
   environment:
     - N8N_DIAGNOSTICS_ENABLED=false
+    - N8N_CUSTOM_EXTENSIONS=/home/node/.n8n/custom
+    - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
 
 services:
   n8n-import:
@@ -19,6 +21,7 @@ services:
     volumes:
       - n8n_storage:/home/node/.n8n
       - ./n8n/backup:/backup
+      - ./n8n/custom:/home/node/.n8n/custom
 
   n8n:
     <<: *service-n8n
@@ -30,6 +33,7 @@ services:
     volumes:
       - n8n_storage:/home/node/.n8n
       - ./shared:/data/shared
+      - ./n8n/custom:/home/node/.n8n/custom
     depends_on:
       n8n-import:
         condition: service_completed_successfully
